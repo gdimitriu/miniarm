@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">miniarmControlCenter</string>
+    <string name="miniarm_connection_ble">Miniarm Connection BLE</string>
+    <string name="miniarm_ble_name">Name</string>
+    <string name="miniarm_ble_mac">MAC</string>
+    <string name="miniarm_connection_menu">Connect to</string>
+    <string name="miniarm_send">Send</string>
+    <string name="miniarm_disconnect">Disconnect</string>
+    <string name="default_gripper">90</string>
+    <string name="gripper_name_text">Gripper</string>
+    <string name="default_elbow">90</string>
+    <string name="elbow_name_text">Elbow</string>
+    <string name="default_shoulder">90</string>
+    <string name="shoulder_name_text">Shoulder</string>
+    <string name="default_waist">90</string>
+    <string name="waist_name_text">Waist</string>
+</resources>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/miniarm_control"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/movement_control"
+        android:layout_width="298dp"
+        android:layout_height="468dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/miniarm_send_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- gripper -->
+        <EditText
+            android:id="@+id/gripperText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/gripper_name_text"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/gripperBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+        <EditText
+            android:id="@+id/currentGripper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="5"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/default_gripper"
+            android:textSize="18sp" />
+        <!-- elbow -->
+        <EditText
+            android:id="@+id/elbowText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
+            android:focusable="false"
+            android:ems="5"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/elbow_name_text"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/elbowBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+        <EditText
+            android:id="@+id/currentElbow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="5"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/default_elbow"
+            android:textSize="18sp" />
+        <!-- shoulder -->
+        <EditText
+            android:id="@+id/shoulderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/shoulder_name_text"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/shoulderBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+        <EditText
+            android:id="@+id/currentShoulder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:editable="true"
+            android:ems="5"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/default_shoulder"
+            android:textSize="18sp" />
+        <!-- waist -->
+        <EditText
+            android:id="@+id/waistText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/waist_name_text"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/waistBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="301dp" />
+
+        <EditText
+            android:id="@+id/currentWaist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="5"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/default_waist"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/miniarm_send_close"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movement_control"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="100dp"
+        android:layout_width="300dp">
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/miniarm_send"
+            app:layout_constraintEnd_toStartOf="@id/miniarm_disconnect"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        <Button
+            android:id="@+id/miniarm_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/miniarm_disconnect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/send"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,4 +43,8 @@ class MiniarmSettingsViewModel : ViewModel()  {
         super.onCleared()
         bleSocket?.close()
     }
+    fun closeSockets() {
+        bleSocket?.close()
+        connectionType = ConnectionType.NONE
+    }
 }

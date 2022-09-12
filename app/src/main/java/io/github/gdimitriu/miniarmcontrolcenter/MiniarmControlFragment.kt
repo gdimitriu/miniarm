@@ -244,21 +244,25 @@ class MiniarmControlFragment : Fragment() {
                 if (isCurrentWaistChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("w%s#\n",miniarmSettingsViewModel.currentWaist))) {
                         Log.d(TAG, "Waist send")
+                        isCurrentWaistChanged = false
                     }
                 }
                 if (isCurrentShoulderChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("s%s#\n",miniarmSettingsViewModel.currentShoulder))) {
                         Log.d(TAG, "Shoulder send")
+                        isCurrentShoulderChanged = false
                     }
                 }
                 if (isCurrentElbowChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("e%s#\n",miniarmSettingsViewModel.currentElbow))) {
                         Log.d(TAG, "Elbow send")
+                        isCurrentElbowChanged = false
                     }
                 }
                 if (isCurrentGripperChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("g%s#\n",miniarmSettingsViewModel.currentGripper))) {
                         Log.d(TAG, "Gripper send")
+                        isCurrentGripperChanged = false
                     }
                 }
             }
@@ -268,14 +272,14 @@ class MiniarmControlFragment : Fragment() {
         disconnectButton.setOnTouchListener { view, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-
+                miniarmSettingsViewModel.closeSockets()
             }
             return@setOnTouchListener false
         }
         return view;
     }
 
-    private fun sendOneWayCommandToMiniarm(message : String, hasAck : Boolean = false) : Boolean = runBlocking {
+    private fun sendOneWayCommandToMiniarm(message : String, hasAck : Boolean = true) : Boolean = runBlocking {
         if (miniarmSettingsViewModel.connectionType == ConnectionType.BLE && validateBleSocketConnection(miniarmSettingsViewModel.bleSocket)) {
             var job = GlobalScope.launch {
                 val outputStreamWriter =

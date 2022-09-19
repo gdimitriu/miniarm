@@ -40,10 +40,16 @@ class MiniarmControlFragment : Fragment() {
     private lateinit var waistBar : SeekBar
     private lateinit var currentWaist : EditText
     private var isCurrentWaistChanged : Boolean = false
-    //send
-    private lateinit var sendButton : Button
+    //exec
+    private lateinit var execButton : Button
     //disconnect
     private lateinit var disconnectButton : Button
+    //run forward
+    private lateinit var runForwardButton : Button
+    //run reverse
+    private lateinit var runReverseButton : Button
+    //save
+    private lateinit var saveButton : Button
     private var isStart : Boolean = false
 
     @SuppressLint("ClickableViewAccessibility")
@@ -237,42 +243,98 @@ class MiniarmControlFragment : Fragment() {
         }
         currentWaist.setText(miniarmSettingsViewModel.currentWaist)
         currentWaist.addTextChangedListener(waistWatcher)
-        sendButton = view.findViewById(R.id.send)
-        sendButton.setOnTouchListener { view, motionEvent ->
+        //exec button
+        execButton = view.findViewById(R.id.miniarm_exec)
+        execButton.setOnTouchListener { view, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (isCurrentWaistChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("w%s#\n",miniarmSettingsViewModel.currentWaist))) {
-                        Log.d(TAG, "Waist send")
+                        Log.d(TAG, "Waist exec")
                         isCurrentWaistChanged = false
                     }
                 }
                 if (isCurrentShoulderChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("s%s#\n",miniarmSettingsViewModel.currentShoulder))) {
-                        Log.d(TAG, "Shoulder send")
+                        Log.d(TAG, "Shoulder exec")
                         isCurrentShoulderChanged = false
                     }
                 }
                 if (isCurrentElbowChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("e%s#\n",miniarmSettingsViewModel.currentElbow))) {
-                        Log.d(TAG, "Elbow send")
+                        Log.d(TAG, "Elbow exec")
                         isCurrentElbowChanged = false
                     }
                 }
                 if (isCurrentGripperChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("g%s#\n",miniarmSettingsViewModel.currentGripper))) {
-                        Log.d(TAG, "Gripper send")
+                        Log.d(TAG, "Gripper exec")
                         isCurrentGripperChanged = false
                     }
                 }
             }
             return@setOnTouchListener false
         }
+        //disconnect button
         disconnectButton = view.findViewById(R.id.miniarm_disconnect)
         disconnectButton.setOnTouchListener { view, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 miniarmSettingsViewModel.closeSockets()
+            }
+            return@setOnTouchListener false
+        }
+        //save button
+        saveButton = view.findViewById(R.id.miniarm_save)
+        saveButton.setOnTouchListener { view, motionEvent ->
+            val event = motionEvent as MotionEvent
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (isCurrentWaistChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("Sw%s#\n",miniarmSettingsViewModel.currentWaist))) {
+                        Log.d(TAG, "Waist saved")
+                        isCurrentWaistChanged = false
+                    }
+                }
+                if (isCurrentShoulderChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("Ss%s#\n",miniarmSettingsViewModel.currentShoulder))) {
+                        Log.d(TAG, "Shoulder saved")
+                        isCurrentShoulderChanged = false
+                    }
+                }
+                if (isCurrentElbowChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("Se%s#\n",miniarmSettingsViewModel.currentElbow))) {
+                        Log.d(TAG, "Elbow saved")
+                        isCurrentElbowChanged = false
+                    }
+                }
+                if (isCurrentGripperChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("Sg%s#\n",miniarmSettingsViewModel.currentGripper))) {
+                        Log.d(TAG, "Gripper saved")
+                        isCurrentGripperChanged = false
+                    }
+                }
+            }
+            return@setOnTouchListener false
+        }
+        //run forward
+        runForwardButton = view.findViewById(R.id.miniarm_run_forward)
+        runForwardButton.setOnTouchListener { view, motionEvent ->
+            val event = motionEvent as MotionEvent
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (sendOneWayCommandToMiniarm(String.format("Rf#\n"))) {
+                    Log.d(TAG, "Run forward")
+                }
+            }
+            return@setOnTouchListener false
+        }
+        //run reverse
+        runReverseButton = view.findViewById(R.id.miniarm_run_reverse)
+        runReverseButton.setOnTouchListener { view, motionEvent ->
+            val event = motionEvent as MotionEvent
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (sendOneWayCommandToMiniarm(String.format("Rr#\n"))) {
+                    Log.d(TAG, "Run reverse")
+                }
             }
             return@setOnTouchListener false
         }

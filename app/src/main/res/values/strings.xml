@@ -4,7 +4,10 @@
     <string name="miniarm_ble_name">Name</string>
     <string name="miniarm_ble_mac">MAC</string>
     <string name="miniarm_connection_menu">Connect to</string>
-    <string name="miniarm_send">Send</string>
+    <string name="miniarm_exec">Exec</string>
+    <string name="miniarm_run_forward">Run Forward</string>
+    <string name="miniarm_run_reverse">Run Reverse</string>
+    <string name="miniarm_save">Save</string>
     <string name="miniarm_disconnect">Disconnect</string>
     <string name="default_gripper">90</string>
     <string name="gripper_name_text">Gripper</string>

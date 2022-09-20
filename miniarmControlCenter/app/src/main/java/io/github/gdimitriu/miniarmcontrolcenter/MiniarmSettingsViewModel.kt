@@ -24,6 +24,11 @@ class MiniarmSettingsViewModel : ViewModel()  {
     var currentWaist : String
     var isWaistChanged : Boolean
 
+    var delay : String
+    var isDelayChanged : Boolean
+
+    var commands : ArrayDeque<String>
+
     init {
         Log.d(TAG, "Initialized the model view")
         isChanged = true
@@ -37,12 +42,18 @@ class MiniarmSettingsViewModel : ViewModel()  {
         isShoulderChanged = true
         currentWaist = "90"
         isWaistChanged = true
+        delay = "0"
+        isDelayChanged = true
+        commands = ArrayDeque<String>()
     }
+
     override fun onCleared() {
         Log.d(TAG,"Clearing and close the socket.")
         super.onCleared()
         bleSocket?.close()
+        commands.clear()
     }
+
     fun closeSockets() {
         bleSocket?.close()
         connectionType = ConnectionType.NONE

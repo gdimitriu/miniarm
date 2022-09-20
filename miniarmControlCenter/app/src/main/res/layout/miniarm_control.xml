@@ -10,8 +10,9 @@
     <LinearLayout
         android:id="@+id/movement_control"
         android:layout_width="298dp"
-        android:layout_height="468dp"
+        android:layout_height="550dp"
         android:orientation="vertical"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@id/miniarm_send_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,6 +160,32 @@
             android:singleLine="true"
             android:text="@string/default_waist"
             android:textSize="18sp" />
+        <EditText
+            android:id="@+id/delayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/delay_name_text"
+            android:textSize="18sp" />
+        <EditText
+            android:id="@+id/currentDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="true"
+            android:ems="5"
+            android:gravity="center"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/default_waist"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,6 +193,7 @@
         android:layout_width="409dp"
         android:layout_height="154dp"
         android:orientation="vertical"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -176,37 +204,53 @@
             android:id="@+id/miniarm_run_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:text="@string/miniarm_run_forward"
-            app:layout_constraintBottom_toTopOf="@+id/miniarm_exec"
+            app:layout_constraintBottom_toTopOf="@+id/miniarm_deploy"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/miniarm_exec"/>
+
+        <Button
+            android:id="@+id/miniarm_exec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/miniarm_exec"
+            app:layout_constraintBottom_toTopOf="@+id/miniarm_deploy"
+            app:layout_constraintEnd_toStartOf="@id/miniarm_run_reverse"
+            app:layout_constraintStart_toEndOf="@id/miniarm_run_forward"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/miniarm_run_reverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginBottom="16dp"
             android:text="@string/miniarm_run_reverse"
+            app:layout_constraintStart_toEndOf="@id/miniarm_exec"
             app:layout_constraintBottom_toTopOf="@+id/miniarm_disconnect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/miniarm_exec"
+            android:id="@+id/miniarm_deploy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/miniarm_exec"
+            android:text="@string/miniarm_deploy"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/miniarm_save"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +267,7 @@
             android:text="@string/miniarm_save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/miniarm_disconnect"
-            app:layout_constraintStart_toEndOf="@id/miniarm_exec"
+            app:layout_constraintStart_toEndOf="@id/miniarm_deploy"
             />
 
         <Button

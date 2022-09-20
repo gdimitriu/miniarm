@@ -40,6 +40,9 @@ class MiniarmControlFragment : Fragment() {
     private lateinit var waistBar : SeekBar
     private lateinit var currentWaist : EditText
     private var isCurrentWaistChanged : Boolean = false
+    //delay
+    private lateinit var currentDelay : EditText
+    private var isDelayChanged : Boolean = false
     //exec
     private lateinit var execButton : Button
     //disconnect
@@ -50,6 +53,8 @@ class MiniarmControlFragment : Fragment() {
     private lateinit var runReverseButton : Button
     //save
     private lateinit var saveButton : Button
+    //deploy
+    private lateinit var deployButton : Button
     private var isStart : Boolean = false
 
     @SuppressLint("ClickableViewAccessibility")
@@ -243,6 +248,25 @@ class MiniarmControlFragment : Fragment() {
         }
         currentWaist.setText(miniarmSettingsViewModel.currentWaist)
         currentWaist.addTextChangedListener(waistWatcher)
+        //delay
+        currentDelay = view.findViewById(R.id.currentDelay)
+        val delayWatcher = object : TextWatcher {
+            override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
+
+            override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
+                miniarmSettingsViewModel.delay = sequence.toString()
+                isDelayChanged = true
+                miniarmSettingsViewModel.isDelayChanged = true
+            }
+
+            override fun afterTextChanged(sequence: Editable?) {
+                //
+            }
+        }
+        currentDelay.setText(miniarmSettingsViewModel.delay)
+        currentDelay.addTextChangedListener(delayWatcher)
         //exec button
         execButton = view.findViewById(R.id.miniarm_exec)
         execButton.setOnTouchListener { view, motionEvent ->
@@ -272,6 +296,13 @@ class MiniarmControlFragment : Fragment() {
                         isCurrentGripperChanged = false
                     }
                 }
+                if (isDelayChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("d%s#\n",miniarmSettingsViewModel.delay))) {
+                        Log.d(TAG, "Delay exec")
+                        isDelayChanged = false
+                        miniarmSettingsViewModel.isDelayChanged = false
+                    }
+                }
             }
             return@setOnTouchListener false
         }
@@ -292,25 +323,36 @@ class MiniarmControlFragment : Fragment() {
                 if (isCurrentWaistChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("Sw%s#\n",miniarmSettingsViewModel.currentWaist))) {
                         Log.d(TAG, "Waist saved")
+                        miniarmSettingsViewModel.commands.addLast(String.format("w%s#\n",miniarmSettingsViewModel.currentWaist))
                         isCurrentWaistChanged = false
                     }
                 }
                 if (isCurrentShoulderChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("Ss%s#\n",miniarmSettingsViewModel.currentShoulder))) {
                         Log.d(TAG, "Shoulder saved")
+                        miniarmSettingsViewModel.commands.addLast(String.format("s%s#\n",miniarmSettingsViewModel.currentShoulder))
                         isCurrentShoulderChanged = false
                     }
                 }
                 if (isCurrentElbowChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("Se%s#\n",miniarmSettingsViewModel.currentElbow))) {
                         Log.d(TAG, "Elbow saved")
+                        miniarmSettingsViewModel.commands.addLast(String.format("e%s#\n",miniarmSettingsViewModel.currentElbow))
                         isCurrentElbowChanged = false
                     }
                 }
                 if (isCurrentGripperChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("Sg%s#\n",miniarmSettingsViewModel.currentGripper))) {
                         Log.d(TAG, "Gripper saved")
+                        miniarmSettingsViewModel.commands.addLast(String.format("g%s#\n",miniarmSettingsViewModel.currentGripper))
                         isCurrentGripperChanged = false
+                    }
+                }
+                if (isDelayChanged) {
+                    if (sendOneWayCommandToMiniarm(String.format("Sd%s#\n",miniarmSettingsViewModel.delay))) {
+                        Log.d(TAG, "Delay saved")
+                        miniarmSettingsViewModel.commands.addLast(String.format("d%s#\n",miniarmSettingsViewModel.delay))
+                        isDelayChanged = false
                     }
                 }
             }
@@ -334,6 +376,22 @@ class MiniarmControlFragment : Fragment() {
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (sendOneWayCommandToMiniarm(String.format("Rr#\n"))) {
                     Log.d(TAG, "Run reverse")
+                }
+            }
+            return@setOnTouchListener false
+        }
+        //deploy button
+        deployButton = view.findViewById(R.id.miniarm_deploy)
+        deployButton.setOnTouchListener { view, motionEvent ->
+            val event = motionEvent as MotionEvent
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (sendOneWayCommandToMiniarm(String.format("C#\n"))) {
+                    Log.d(TAG, "Clear command list")
+                }
+                for (str:String in miniarmSettingsViewModel.commands) {
+                    if (sendOneWayCommandToMiniarm("S$str")) {
+                        Log.d(TAG, "Save command $str on droid")
+                    }
                 }
             }
             return@setOnTouchListener false

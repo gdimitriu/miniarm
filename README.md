@@ -7,7 +7,9 @@ The platform is from [romanian site](https://www.optimusdigital.ro/en/robot-kits
 But is similar with [amazon site](https://www.amazon.com/Raspberry-SNAM1500-Robotic-Mechanical-Arduino/dp/B07T7ML7DF)
 
 
-###This supports the following commands:
+### This supports the following commands:
+
+Those commands could be also used with any bluetooth terminal like Arduino Bluetooth (but be sure that you have \n terminator).
 
 #### basic commands :
 - wxx# move the waist to xx degree

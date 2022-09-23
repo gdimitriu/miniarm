@@ -17,6 +17,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import java.lang.Exception
 
 private const val TAG = "MiniarmControl"
 
@@ -390,7 +391,7 @@ class MiniarmControlFragment : Fragment() {
                 }
                 for (str:String in miniarmSettingsViewModel.commands) {
                     if (sendOneWayCommandToMiniarm("S$str")) {
-                        Log.d(TAG, "Save command $str on droid")
+                        Log.d(TAG, "Save command $str")
                     }
                 }
             }
@@ -402,16 +403,23 @@ class MiniarmControlFragment : Fragment() {
     private fun sendOneWayCommandToMiniarm(message : String, hasAck : Boolean = true) : Boolean = runBlocking {
         if (miniarmSettingsViewModel.connectionType == ConnectionType.BLE && validateBleSocketConnection(miniarmSettingsViewModel.bleSocket)) {
             var job = GlobalScope.launch {
-                val outputStreamWriter =
-                    OutputStreamWriter(miniarmSettingsViewModel.bleSocket?.getOutputStream())
-                val inputStreamReader =
-                    BufferedReader(InputStreamReader(miniarmSettingsViewModel.bleSocket?.getInputStream()))
-                //send data
-                outputStreamWriter.write(message)
-                outputStreamWriter.flush()
-                if (hasAck) {
-                    val status = inputStreamReader.readLine()
-                    Log.d(TAG,"s=$status")
+                try {
+                    val outputStreamWriter =
+                        OutputStreamWriter(miniarmSettingsViewModel.bleSocket?.getOutputStream())
+                    val inputStreamReader =
+                        BufferedReader(InputStreamReader(miniarmSettingsViewModel.bleSocket?.getInputStream()))
+                    //send data
+                    outputStreamWriter.write(message)
+                    outputStreamWriter.flush()
+                    if (hasAck) {
+                        val status = inputStreamReader.readLine()
+                        Log.d(TAG, "s=$status")
+                    }
+                } catch (e : Exception) {
+                    miniarmSettingsViewModel.bleSocket?.close()
+                    miniarmSettingsViewModel.bleSocket = null
+                    miniarmSettingsViewModel.connectionType = ConnectionType.NONE
+                    Log.e(TAG, e.toString())
                 }
             }
             job.join()

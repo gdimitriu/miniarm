@@ -31,7 +31,7 @@
 #define servoPin_Elbow 5
 #define servoPin_Shoulder 6
 #define servoPin_Waist 7
-//#define SERIAL_DEBUG 1
+#define SERIAL_DEBUG 1
 
 Servo servo_Gripper;
 Servo servo_Elbow;
@@ -63,7 +63,7 @@ boolean isValidNumber(char *data) {
   return true;
 }
 
-#ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG_MENU
 void printMenu() {
   if (!Serial)
     return;
@@ -87,6 +87,7 @@ void printMenu() {
 void setup() {
 #ifdef SERIAL_DEBUG  
   Serial.begin(9600);
+  Serial.println("before init");
 #endif  
   BTSerial.begin(38400);  
   enableInterrupt(RxD, neoSSerial1ISR, CHANGE);
@@ -95,7 +96,7 @@ void setup() {
   servo_Elbow.attach(servoPin_Elbow);
   servo_Shoulder.attach(servoPin_Shoulder);
   servo_Waist.attach(servoPin_Waist);
-#ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG_MENU
   if (Serial) {
     Serial.println("after init");
     printMenu();
@@ -228,7 +229,7 @@ bool makeMove(char *inData, bool isBT) {
     //remove S from command
     for (int i = 0 ; i < strlen(inData); i++) {
        inData[i]=inData[i+1];
-    }   
+    }
     if (isPrefixCommand(inData[0])) {      
       char *temp = &inData[1];
       if (!isValidNumber(temp)) {
@@ -236,6 +237,11 @@ bool makeMove(char *inData, bool isBT) {
       } else {
         commands.addTail(inData);
         retValue = true;
+#ifdef SERIAL_DEBUG
+        if (Serial) {
+          Serial.print("Save command ");Serial.println(inData);
+        }
+#endif        
       }
     } else {
       retValue = false;
@@ -255,7 +261,6 @@ bool makeMove(char *inData, bool isBT) {
       }
 #endif      
       commands.reset();
-      Serial.println("reset ");
       char *temp = commands.getForwardValue();
       while (temp != NULL) {
         makeMove(temp,false);
@@ -308,7 +313,7 @@ void readData() {
    if (indexBT > 0 && inDataBT[indexBT-1] == '#') {
      inDataBT[indexBT-1] = '\0';
      if (!makeMove(inDataBT, true)) {
-#ifdef SERIAL_DEBUG        
+#ifdef SERIAL_DEBUG_MENU        
        printMenu();
 #endif         
      }

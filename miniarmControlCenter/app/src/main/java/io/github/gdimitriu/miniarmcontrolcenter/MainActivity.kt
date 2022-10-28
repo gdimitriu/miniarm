@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
                     var text: String? = bufferedReader.readLine()
                     while (text != null) {
-                        miniarmSettingsViewModel.commands.addLast(text)
+                        miniarmSettingsViewModel.commands.addLast(text + "\n")
                         text = bufferedReader.readLine()
                     }
                     fileInputStream?.close()

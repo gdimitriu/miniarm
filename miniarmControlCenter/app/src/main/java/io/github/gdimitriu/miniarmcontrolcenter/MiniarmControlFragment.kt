@@ -77,7 +77,7 @@ class MiniarmControlFragment : Fragment() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 gripperBar.min = 0
-                gripperBar.max = 190
+                gripperBar.max = 180
                 gripperBar.progress = miniarmSettingsViewModel.currentGripper.toInt()
             }
 
@@ -123,7 +123,7 @@ class MiniarmControlFragment : Fragment() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 elbowBar.min = 0
-                elbowBar.max = 190
+                elbowBar.max = 180
                 elbowBar.progress = miniarmSettingsViewModel.currentElbow.toInt()
             }
 
@@ -169,7 +169,7 @@ class MiniarmControlFragment : Fragment() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 shoulderBar.min = 0
-                shoulderBar.max = 190
+                shoulderBar.max = 180
                 shoulderBar.progress = miniarmSettingsViewModel.currentShoulder.toInt()
             }
 
@@ -215,7 +215,7 @@ class MiniarmControlFragment : Fragment() {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 waistBar.min = 0
-                waistBar.max = 190
+                waistBar.max = 180
                 waistBar.progress = miniarmSettingsViewModel.currentWaist.toInt()
             }
 

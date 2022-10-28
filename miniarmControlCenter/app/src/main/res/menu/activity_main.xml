@@ -2,15 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/connection_menu"
-        android:title="@string/miniarm_connection_menu"
+        android:id="@+id/miniarm_menu"
+        android:title="@string/miniarm_menu"
         app:showAsAction="ifRoom|withText">
         <menu>
-        <item
-            android:id="@+id/miniarm_connection_ble"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="@string/miniarm_connection_ble"
-            app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/miniarm_connection_ble"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/miniarm_connection_ble"
+                app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/miniarm_save"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/miniarm_save_file"
+                app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/miniarm_load"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/miniarm_load_file"
+                app:showAsAction="ifRoom|withText" />
         </menu>
     </item>
 </menu>

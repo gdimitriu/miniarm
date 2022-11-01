@@ -21,6 +21,11 @@
                 android:icon="@drawable/ic_launcher_foreground"
                 android:title="@string/miniarm_load_file"
                 app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/miniarm_append"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/miniarm_append_file"
+                app:showAsAction="ifRoom|withText" />
         </menu>
     </item>
 </menu>

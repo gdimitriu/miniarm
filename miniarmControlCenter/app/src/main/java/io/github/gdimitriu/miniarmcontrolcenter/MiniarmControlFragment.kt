@@ -56,7 +56,10 @@ class MiniarmControlFragment : Fragment() {
     private lateinit var saveButton : Button
     //deploy
     private lateinit var deployButton : Button
-    private var isStart : Boolean = false
+
+    //servo settings
+    private val _maxServo = 180
+    private val _minServo = 0
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -68,16 +71,16 @@ class MiniarmControlFragment : Fragment() {
         //gripper
         gripperBar = view.findViewById(R.id.gripperBar)
         currentGripper = view.findViewById(R.id.currentGripper)
-        gripperBar.max = 180
+        gripperBar.max = _maxServo
         gripperBar.progress = 90
-        gripperBar.min = 0
+        gripperBar.min = _minServo
         gripperBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, currentValue: Int, p2: Boolean) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                gripperBar.min = 0
-                gripperBar.max = 180
+                gripperBar.min = _minServo
+                gripperBar.max = _maxServo
                 gripperBar.progress = miniarmSettingsViewModel.currentGripper.toInt()
             }
 
@@ -87,10 +90,8 @@ class MiniarmControlFragment : Fragment() {
                 if (miniarmSettingsViewModel.isGripperChanged)
                     miniarmSettingsViewModel.isGripperChanged = false
                 currentGripper.setText(seekBar!!.progress.toString())
-                miniarmSettingsViewModel.currentGripper = seekBar!!.progress.toString()
-                if (seekBar != null) {
-                    Log.d(TAG,"Current Gripper=" + seekBar.progress.toString())
-                }
+                miniarmSettingsViewModel.currentGripper = seekBar.progress.toString()
+                Log.d(TAG,"Current Gripper=" + seekBar.progress.toString())
             }
         })
         val gripperWatcher = object : TextWatcher {
@@ -99,7 +100,14 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                miniarmSettingsViewModel.currentGripper = sequence.toString()
+                var value = sequence.toString().toInt()
+                if (value < _minServo) {
+                    value = _minServo
+                }
+                if (value > _maxServo) {
+                    value = _maxServo
+                }
+                miniarmSettingsViewModel.currentGripper = value.toString()
                 isCurrentGripperChanged = true
             }
 
@@ -114,16 +122,16 @@ class MiniarmControlFragment : Fragment() {
         //elbow
         elbowBar = view.findViewById(R.id.elbowBar)
         currentElbow = view.findViewById(R.id.currentElbow)
-        elbowBar.max = 180
+        elbowBar.max = _maxServo
         elbowBar.progress = 90
-        elbowBar.min = 0
+        elbowBar.min = _minServo
         elbowBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, currentValue: Int, p2: Boolean) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                elbowBar.min = 0
-                elbowBar.max = 180
+                elbowBar.min = _minServo
+                elbowBar.max = _maxServo
                 elbowBar.progress = miniarmSettingsViewModel.currentElbow.toInt()
             }
 
@@ -133,10 +141,8 @@ class MiniarmControlFragment : Fragment() {
                 if (miniarmSettingsViewModel.isElbowChanged)
                     miniarmSettingsViewModel.isElbowChanged = false
                 currentElbow.setText(seekBar!!.progress.toString())
-                miniarmSettingsViewModel.currentElbow = seekBar!!.progress.toString()
-                if (seekBar != null) {
-                    Log.d(TAG,"Current Elbow=" + seekBar.progress.toString())
-                }
+                miniarmSettingsViewModel.currentElbow = seekBar.progress.toString()
+                Log.d(TAG,"Current Elbow=" + seekBar.progress.toString())
             }
         })
         val elbowWatcher = object : TextWatcher {
@@ -145,7 +151,14 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                miniarmSettingsViewModel.currentElbow = sequence.toString()
+                var value = sequence.toString().toInt()
+                if (value < _minServo) {
+                    value = _minServo
+                }
+                if (value > _maxServo) {
+                    value = _maxServo
+                }
+                miniarmSettingsViewModel.currentElbow = value.toString()
                 isCurrentElbowChanged = true
             }
 
@@ -160,16 +173,16 @@ class MiniarmControlFragment : Fragment() {
         //shoulder
         shoulderBar = view.findViewById(R.id.shoulderBar)
         currentShoulder = view.findViewById(R.id.currentShoulder)
-        shoulderBar.max = 180
+        shoulderBar.max = _maxServo
         shoulderBar.progress = 90
-        shoulderBar.min = 0
+        shoulderBar.min = _minServo
         shoulderBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, currentValue: Int, p2: Boolean) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                shoulderBar.min = 0
-                shoulderBar.max = 180
+                shoulderBar.min = _minServo
+                shoulderBar.max = _maxServo
                 shoulderBar.progress = miniarmSettingsViewModel.currentShoulder.toInt()
             }
 
@@ -179,10 +192,8 @@ class MiniarmControlFragment : Fragment() {
                 if (miniarmSettingsViewModel.isShoulderChanged)
                     miniarmSettingsViewModel.isShoulderChanged = false
                 currentShoulder.setText(seekBar!!.progress.toString())
-                miniarmSettingsViewModel.currentShoulder = seekBar!!.progress.toString()
-                if (seekBar != null) {
-                    Log.d(TAG,"Current Shoulder=" + seekBar.progress.toString())
-                }
+                miniarmSettingsViewModel.currentShoulder = seekBar.progress.toString()
+                Log.d(TAG,"Current Shoulder=" + seekBar.progress.toString())
             }
         })
         val shoulderWatcher = object : TextWatcher {
@@ -191,7 +202,14 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                miniarmSettingsViewModel.currentShoulder = sequence.toString()
+                var value = sequence.toString().toInt()
+                if (value < _minServo) {
+                    value = _minServo
+                }
+                if (value > _maxServo) {
+                    value = _maxServo
+                }
+                miniarmSettingsViewModel.currentShoulder = value.toString()
                 isCurrentShoulderChanged = true
             }
 
@@ -206,16 +224,16 @@ class MiniarmControlFragment : Fragment() {
         //waist
         waistBar = view.findViewById(R.id.waistBar)
         currentWaist = view.findViewById(R.id.currentWaist)
-        waistBar.max = 180
+        waistBar.max = _maxServo
         waistBar.progress = 90
-        waistBar.min = 0
+        waistBar.min = _minServo
         waistBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, currentValue: Int, p2: Boolean) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                waistBar.min = 0
-                waistBar.max = 180
+                waistBar.min = _minServo
+                waistBar.max = _maxServo
                 waistBar.progress = miniarmSettingsViewModel.currentWaist.toInt()
             }
 
@@ -225,10 +243,8 @@ class MiniarmControlFragment : Fragment() {
                 if (miniarmSettingsViewModel.isWaistChanged)
                     miniarmSettingsViewModel.isWaistChanged = false
                 currentWaist.setText(seekBar!!.progress.toString())
-                miniarmSettingsViewModel.currentWaist = seekBar!!.progress.toString()
-                if (seekBar != null) {
-                    Log.d(TAG,"Current Waist=" + seekBar.progress.toString())
-                }
+                miniarmSettingsViewModel.currentWaist = seekBar.progress.toString()
+                Log.d(TAG,"Current Waist=" + seekBar.progress.toString())
             }
         })
         val waistWatcher = object : TextWatcher {
@@ -237,7 +253,14 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                miniarmSettingsViewModel.currentWaist = sequence.toString()
+                var value = sequence.toString().toInt()
+                if (value < _minServo) {
+                    value = _minServo
+                }
+                if (value > _maxServo) {
+                    value = _maxServo
+                }
+                miniarmSettingsViewModel.currentWaist = value.toString()
                 isCurrentWaistChanged = true
             }
 
@@ -257,7 +280,11 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                miniarmSettingsViewModel.delay = sequence.toString()
+                var value = sequence.toString().toInt()
+                if (value < 0) {
+                    value = 0
+                }
+                miniarmSettingsViewModel.delay = value.toString()
                 isDelayChanged = true
                 miniarmSettingsViewModel.isDelayChanged = true
             }
@@ -270,7 +297,7 @@ class MiniarmControlFragment : Fragment() {
         currentDelay.addTextChangedListener(delayWatcher)
         //exec button
         execButton = view.findViewById(R.id.miniarm_exec)
-        execButton.setOnTouchListener { view, motionEvent ->
+        execButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (isCurrentWaistChanged) {
@@ -309,7 +336,7 @@ class MiniarmControlFragment : Fragment() {
         }
         //disconnect button
         disconnectButton = view.findViewById(R.id.miniarm_disconnect)
-        disconnectButton.setOnTouchListener { view, motionEvent ->
+        disconnectButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 miniarmSettingsViewModel.closeSockets()
@@ -318,7 +345,7 @@ class MiniarmControlFragment : Fragment() {
         }
         //save button
         saveButton = view.findViewById(R.id.miniarm_save)
-        saveButton.setOnTouchListener { view, motionEvent ->
+        saveButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (isCurrentWaistChanged) {
@@ -361,7 +388,7 @@ class MiniarmControlFragment : Fragment() {
         }
         //run forward
         runForwardButton = view.findViewById(R.id.miniarm_run_forward)
-        runForwardButton.setOnTouchListener { view, motionEvent ->
+        runForwardButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (sendOneWayCommandToMiniarm(String.format("Rf#\n"))) {
@@ -372,7 +399,7 @@ class MiniarmControlFragment : Fragment() {
         }
         //run reverse
         runReverseButton = view.findViewById(R.id.miniarm_run_reverse)
-        runReverseButton.setOnTouchListener { view, motionEvent ->
+        runReverseButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (sendOneWayCommandToMiniarm(String.format("Rr#\n"))) {
@@ -383,7 +410,7 @@ class MiniarmControlFragment : Fragment() {
         }
         //deploy button
         deployButton = view.findViewById(R.id.miniarm_deploy)
-        deployButton.setOnTouchListener { view, motionEvent ->
+        deployButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 if (sendOneWayCommandToMiniarm(String.format("C#\n"))) {
@@ -397,17 +424,17 @@ class MiniarmControlFragment : Fragment() {
             }
             return@setOnTouchListener false
         }
-        return view;
+        return view
     }
 
     private fun sendOneWayCommandToMiniarm(message : String, hasAck : Boolean = true) : Boolean = runBlocking {
         if (miniarmSettingsViewModel.connectionType == ConnectionType.BLE && validateBleSocketConnection(miniarmSettingsViewModel.bleSocket)) {
-            var job = GlobalScope.launch {
+            val job = GlobalScope.launch {
                 try {
                     val outputStreamWriter =
-                        OutputStreamWriter(miniarmSettingsViewModel.bleSocket?.getOutputStream())
+                        OutputStreamWriter(miniarmSettingsViewModel.bleSocket?.outputStream)
                     val inputStreamReader =
-                        BufferedReader(InputStreamReader(miniarmSettingsViewModel.bleSocket?.getInputStream()))
+                        BufferedReader(InputStreamReader(miniarmSettingsViewModel.bleSocket?.inputStream))
                     //send data
                     outputStreamWriter.write(message)
                     outputStreamWriter.flush()
@@ -439,10 +466,6 @@ class MiniarmControlFragment : Fragment() {
         fun newInstance(): MiniarmControlFragment {
             return MiniarmControlFragment()
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     private fun validateBleSocketConnection(socket: BluetoothSocket?): Boolean {

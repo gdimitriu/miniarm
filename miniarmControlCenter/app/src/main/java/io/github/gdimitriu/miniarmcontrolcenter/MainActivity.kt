@@ -10,7 +10,6 @@ import android.provider.DocumentsContract
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.net.toUri
 import java.io.BufferedReader
@@ -20,6 +19,10 @@ import java.io.InputStreamReader
 private const val TAG = "MiniarmControlMain"
 class MainActivity : AppCompatActivity() {
     private val miniarmSettingsViewModel: MiniarmSettingsViewModel by viewModels()
+
+    private val _saveFile = 2
+    private val _loadFile = 1
+    private val _appendFile = 3
 
     private val isExternalStorageReadOnly: Boolean get() {
         val extStorageState = Environment.getExternalStorageState()
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == _saveFile && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that
             // the user selected.
             resultData?.data?.also { uri ->
@@ -49,10 +52,30 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == _loadFile && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that
             // the user selected.
             miniarmSettingsViewModel.commands.clear()
+            resultData?.data?.also { uri ->
+                // Perform operations on the document using its URI.
+                try {
+                    val fileInputStream = contentResolver.openInputStream(uri)
+                    var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+                    val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+                    var text: String? = bufferedReader.readLine()
+                    while (text != null) {
+                        miniarmSettingsViewModel.commands.addLast(text + "\n")
+                        text = bufferedReader.readLine()
+                    }
+                    fileInputStream?.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        if (requestCode == _appendFile && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
             resultData?.data?.also { uri ->
                 // Perform operations on the document using its URI.
                 try {
@@ -118,12 +141,17 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.miniarm_save -> {
                 val myExternalFile = File(Environment.getExternalStoragePublicDirectory("Downloads/Miniarm"),"deploy.dat")
-                openFile(myExternalFile!!.toUri(),2)
+                openFile(myExternalFile!!.toUri(),_saveFile)
                 true
             }
             R.id.miniarm_load -> {
                 val myExternalFile = File(Environment.getExternalStoragePublicDirectory("Downloads/Miniarm"),"deploy.dat")
-                openFile(myExternalFile!!.toUri(),1)
+                openFile(myExternalFile!!.toUri(),_loadFile)
+                true
+            }
+            R.id.miniarm_append -> {
+                val myExternalFile = File(Environment.getExternalStoragePublicDirectory("Downloads/Miniarm"),"deploy.dat")
+                openFile(myExternalFile!!.toUri(),_appendFile)
                 true
             }
             else -> return super.onOptionsItemSelected(item)

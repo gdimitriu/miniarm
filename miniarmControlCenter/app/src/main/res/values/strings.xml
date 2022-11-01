@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">miniarmControlCenter</string>
-    <string name="miniarm_connection_ble">Miniarm Connection BLE</string>
+    <string name="miniarm_connection_ble">Connect to BLE</string>
     <string name="miniarm_save_file">Save file</string>
     <string name="miniarm_load_file">Load file</string>
+    <string name="miniarm_append_file">Append from file</string>
     <string name="miniarm_ble_name">Name</string>
     <string name="miniarm_ble_mac">MAC</string>
     <string name="miniarm_menu">Menu</string>

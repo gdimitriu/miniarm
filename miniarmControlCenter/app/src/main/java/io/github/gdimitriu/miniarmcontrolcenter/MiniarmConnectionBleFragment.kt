@@ -28,16 +28,11 @@ private const val TAG = "MiniarmConnectionBle"
 @SuppressLint("MissingPermission")
 class MiniarmConnectionBleFragment : Fragment() {
 
-    private val REQUEST_ENABLE_BT = 1
+    private val _requestEnableBT = 1
     private val droidSettingsViewModel: MiniarmSettingsViewModel by activityViewModels()
     private var bluetoothAdapter: BluetoothAdapter? = null
     private lateinit var bleRecyclerView: RecyclerView
     private var adapter: BleAdapter? = BleAdapter(emptyList())
-    private val MY_UUID = UUID(1, 4)
-
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        super.onSaveInstanceState(savedInstanceState)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -59,11 +54,11 @@ class MiniarmConnectionBleFragment : Fragment() {
         bleRecyclerView.adapter = adapter
         val bluetoothManager =
             context?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.getAdapter()
+        bluetoothAdapter = bluetoothManager.adapter
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter!!.isEnabled) {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+                startActivityForResult(enableBtIntent, _requestEnableBT)
             } else {
                 val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
                 if (pairedDevices != null) {
@@ -104,7 +99,7 @@ class MiniarmConnectionBleFragment : Fragment() {
 
         private fun connectToDroid() = runBlocking {
             var gotException: Exception? = null
-            var job = GlobalScope.launch {
+            val job = GlobalScope.launch {
                 if (bluetoothAdapter?.isDiscovering == true) {
                     bluetoothAdapter?.cancelDiscovery()
                 }

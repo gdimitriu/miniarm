@@ -3,23 +3,23 @@
 #define LOOP 1
 #define LOAD 2
 #define DIRECTMODE 3
-#define COMANDS_START_POSITION 3
+#define COMMANDS_START_POSITION 3
 
 EepromOp::EepromOp(int address, StringList *commands) : _eeprom(address) {
   _commands = commands;
-  _position = COMANDS_START_POSITION;
+  _position = COMMANDS_START_POSITION;
   _autoMode = -1;
   _lastWritedCommand = COMMANDS_START_POSITION;
 }
 
 void EepromOp::clear() {
-  _position = COMANDS_START_POSITION;
+  _position = COMMANDS_START_POSITION;
   _autoMode = -1;
   _lastWritedCommand = COMMANDS_START_POSITION;
 }
 
 void EepromOp::reset() {
-  _position = COMANDS_START_POSITION;
+  _position = COMMANDS_START_POSITION;
 }
 
 void EepromOp::begin() {

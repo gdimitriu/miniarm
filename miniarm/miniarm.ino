@@ -348,9 +348,9 @@ void readData() {
 }
 
 void loop() {
-/*   
+   
 while(!BTSerial.available())
         ; // LOOP...
    readData();
-*/
+
 }

@@ -39,6 +39,7 @@ char* StringListNode::getValue() {
 StringList::StringList() {
   tail = head = current = NULL;
   isAtEnd = false;
+  _size = 0;
 }
 
 void StringList::clear() {
@@ -53,9 +54,11 @@ void StringList::clear() {
   }
   tail = head = current = NULL;
   isAtEnd = false;
+  _size = 0;
 }
 
 void StringList::addTail(StringListNode *element) {
+  _size++;
   if (head == NULL && tail == NULL) {
     head = tail = element;
     element->setPrevious(NULL);
@@ -125,4 +128,8 @@ char *StringList::getReverseValue() {
       isAtEnd = true;
   }
   return ret;
+}
+
+unsigned int StringList::size() {
+  return _size;
 }

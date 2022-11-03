@@ -24,6 +24,7 @@
 #include <NeoSWSerial.h>
 #include <EnableInterrupt.h>
 #include "StringList.h"
+#include "EepromOp.h"
 
 #define RxD 2
 #define TxD 3
@@ -38,12 +39,16 @@ Servo servo_Gripper;
 Servo servo_Elbow;
 Servo servo_Shoulder;
 Servo servo_Waist;
+
 //for communication
 char inDataBT[20]; // Allocate some space for the string
 char inCharBT; // Where to store the character read
 byte indexBT = 0; // Index into array; where to store the character
 boolean cleanupBT;
 StringList commands;
+EepromOp eeprom(0x50,&commands);
+boolean isAutoMode = false;
+boolean isDirectMode = false;
 
 NeoSWSerial BTSerial(RxD, TxD);
 const int prefixCommandNr = 5;
@@ -68,10 +73,8 @@ boolean isValidNumber(char *data) {
 void printMenu() {
   if (!Serial)
     return;
-  Serial.println( "-----------------------------------------------------" );
-  Serial.println( "Mini Robot arm");
-  Serial.println( "-----------------------------------------------------" );
-  Serial.println( "MENU:" );
+  Serial.println( "---------------------------------" );
+  Serial.println( "Mini Robotic arm Menu:");
   Serial.println( "wxx# servo waist xx degree");
   Serial.println( "sxx# servo shoulder xx degree");
   Serial.println( "exx# servo elbow xx degree");
@@ -81,6 +84,7 @@ void printMenu() {
   Serial.println( "Rf# run in forward order");
   Serial.println( "Rr# run in reverse order");
   Serial.println( "C# clear the saved commands");
+  Serial.println( "E[l,L,D,a,c]# save EEPROM");
   Serial.println( "-----------------------------" );
 }
 #endif
@@ -97,13 +101,34 @@ void setup() {
   servo_Elbow.attach(servoPin_Elbow);
   servo_Shoulder.attach(servoPin_Shoulder);
   servo_Waist.attach(servoPin_Waist);
+  eeprom.begin();
 #ifdef SERIAL_DEBUG_MENU
   if (Serial) {
     Serial.println("after init");
     printMenu();
   }
 #endif
-BTSerial.println("Starting");BTSerial.flush();
+  isAutoMode = eeprom.shouldRunLoop();
+  if (eeprom.shouldLoad() || isAutoMode) {
+    unsigned int sz = eeprom.size();
+    for (int i = 0; i < sz; i++) {
+      char *val = eeprom.readNextCommand();
+      commands.addTail(val);
+      delete[] val;
+    }
+    eeprom.reset();
+#ifdef SERIAL_DEBUG
+    Serial.println("Commands loaded");
+    for(int i = 0 ;i < commands.size();i++) {
+      Serial.println(commands.getForwardValue());
+    }
+    commands.reset();
+#endif    
+  }
+  isDirectMode = eeprom.shouldRunDirectMode();
+  if (isDirectMode)
+    isAutoMode = true;
+  BTSerial.println("Starting");BTSerial.flush();
 }
 
 void makeCleanupBT() {
@@ -323,7 +348,9 @@ void readData() {
 }
 
 void loop() {
-   while(!BTSerial.available())
+/*   
+while(!BTSerial.available())
         ; // LOOP...
    readData();
+*/
 }

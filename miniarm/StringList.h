@@ -27,8 +27,10 @@ public:
   char* getReverseValue();
   void reset();
   void clear();
+  unsigned int size();
 private:
   bool isAtEnd;
+  unsigned int _size;
   StringListNode *current;
   StringListNode *head;
   StringListNode *tail;

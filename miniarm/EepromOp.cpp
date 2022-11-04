@@ -3,6 +3,7 @@
 #define LOOP 1
 #define LOAD 2
 #define DIRECTMODE 3
+#define LOOPDIRECTMODE 4
 #define COMMANDS_START_POSITION 3
 
 EepromOp::EepromOp(int address, StringList *commands) : _eeprom(address) {
@@ -10,41 +11,49 @@ EepromOp::EepromOp(int address, StringList *commands) : _eeprom(address) {
   _position = COMMANDS_START_POSITION;
   _autoMode = -1;
   _lastWritedCommand = COMMANDS_START_POSITION;
+  _size = 0;
 }
 
 void EepromOp::clear() {
   _position = COMMANDS_START_POSITION;
   _autoMode = -1;
   _lastWritedCommand = COMMANDS_START_POSITION;
+  _size = 0;
+  _eeprom.writeBuffer(1,(byte *)&_size,2);
 }
 
 void EepromOp::reset() {
   _position = COMMANDS_START_POSITION;
+  if (_commands->size() == 0) {
+    _eeprom.readBuffer(1,(byte *)&_size,2);
+  } else {
+    _size = _commands->size();
+  }
 }
 
 void EepromOp::begin() {
   _eeprom.begin();
+  _eeprom.readBuffer(1,(byte *)&_size,2);
 }
 
 boolean EepromOp::shouldRunLoop() {
-  if (_autoMode == -1) {
-    _autoMode = _eeprom.readByte(0);
-  }
+   _autoMode = _eeprom.readByte(0);
   return _autoMode == LOOP ? true : false;
 }
 
 boolean EepromOp::shouldLoad() {
-  if (_autoMode == -1) {
-    _autoMode = _eeprom.readByte(0);
-  }
+  _autoMode = _eeprom.readByte(0);
   return _autoMode == LOAD ? true : false;
 }
 
 boolean EepromOp::shouldRunDirectMode() {
-  if (_autoMode == -1) {
-    _autoMode = _eeprom.readByte(0);
-  }
+  _autoMode = _eeprom.readByte(0);
   return _autoMode == DIRECTMODE ? true : false;
+}
+
+boolean EepromOp::shouldRunLoopDirectMode() {
+  _autoMode = _eeprom.readByte(0);
+  return _autoMode == LOOPDIRECTMODE ? true : false;
 }
 
 void EepromOp::setAutoMode(char type) {
@@ -56,8 +65,11 @@ void EepromOp::setAutoMode(char type) {
     case 'L':
       value = LOOP;
       break;
-    case 'D':
+    case 'd':
       value = DIRECTMODE;
+      break;
+    case 'D':
+      value = LOOPDIRECTMODE;
       break;
   }
   _eeprom.writeByte(0,value);
@@ -92,6 +104,9 @@ void EepromOp::appendCommand(char *command) {
   delay(100);
   _eeprom.writeBuffer(_lastWritedCommand,command,sz);
   _lastWritedCommand += sz;
+  delay(100);
+  _size++;
+  _eeprom.writeBuffer(1,(byte *)&_size,2);
   delay(100);
 }
 

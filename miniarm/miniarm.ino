@@ -128,6 +128,10 @@ void setup() {
   isDirectMode = eeprom.shouldRunDirectMode();
   if (isDirectMode)
     isAutoMode = true;
+  if (eeprom.shouldRunLoopDirectMode()) {
+    isDirectMode = true;
+    isAutoMode = true;
+  }
   BTSerial.println("Starting");BTSerial.flush();
 }
 
@@ -262,7 +266,11 @@ bool makeMove(char *inData, bool isBT) {
       if (!isValidNumber(temp)) {
         retValue = false;
       } else {
-        commands.addTail(inData);
+        if (isDirectMode) {
+          eeprom.appendCommand(inData);
+        } else {
+          commands.addTail(inData);
+        }
         retValue = true;
 #ifdef SERIAL_DEBUG
         if (Serial) {
@@ -275,6 +283,7 @@ bool makeMove(char *inData, bool isBT) {
     }
   } else if (inData[0] == 'C') {
     commands.clear();
+    eeprom.clear();
     retValue = true;
   } else if (inData[0] == 'R') {
     //remove R from command
@@ -306,6 +315,62 @@ bool makeMove(char *inData, bool isBT) {
         makeMove(temp,false);
         temp = commands.getReverseValue();
       }
+      retValue = true;
+    }
+  } else if (inData[0] == 'E') {
+    //remove E from command
+    for (int i = 0 ; i < strlen(inData); i++) {
+       inData[i]=inData[i+1];
+    }
+    if (inData[0] == 'd') {
+#ifdef SERIAL_DEBUG
+      if (Serial) {
+        Serial.println("Set direct mode");
+      }
+#endif
+       isDirectMode = true;
+       eeprom.reset();
+       eeprom.setAutoMode(inData[0]);
+       retValue = true;
+    } else if (inData[0] == 'l') {
+#ifdef SERIAL_DEBUG
+      if (Serial) {
+        Serial.println("Set load mode");      
+      }
+#endif
+      eeprom.setAutoMode(inData[0]);      
+      retValue = true;
+    } else if (inData[0] == 'L') {
+      isAutoMode = true;
+#ifdef SERIAL_DEBUG
+      if (Serial) {
+        Serial.println("Set auto loop mode");
+      }
+#endif
+      eeprom.setAutoMode(inData[0]);
+      retValue = true;
+    } else if (inData[0] == 'a') {
+#ifdef SERIAL_DEBUG
+      if (Serial) {
+        Serial.println("Save all commands");
+      }
+#endif
+      eeprom.reset();
+      eeprom.writeAllComands();
+      retValue = true;
+    } else if (inData[0] == 'c') {
+      eeprom.clear();
+      retValue = true;
+    } else if (inData[0] == 'D') {
+#ifdef SERIAL_DEBUG
+      if (Serial) {
+        Serial.println("Set loop direct mode");
+      }
+#endif
+      isDirectMode = true;
+      isAutoMode = true;
+      eeprom.reset();
+      eeprom.setAutoMode(inData[0]);
       retValue = true;
     }
   }

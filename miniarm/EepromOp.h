@@ -13,6 +13,7 @@ public:
    */
   boolean shouldRunLoop();
   boolean shouldRunDirectMode();
+  boolean shouldRunLoopDirectMode();
   void setAutoMode(char type);
   void writeAllComands();
   unsigned int size();
@@ -26,6 +27,7 @@ private:
   unsigned int _position;
   unsigned int _lastWritedCommand;
   byte _autoMode;
+  unsigned int _size;
 };
 
 #endif

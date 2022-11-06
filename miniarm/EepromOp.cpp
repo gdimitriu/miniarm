@@ -23,6 +23,7 @@ void EepromOp::clear() {
 }
 
 void EepromOp::reset() {
+  _lastWritedCommand = _position;
   _position = COMMANDS_START_POSITION;
   if (_commands->size() == 0) {
     _eeprom.readBuffer(1,(byte *)&_size,2);
@@ -80,17 +81,22 @@ void EepromOp::setAutoMode(char type) {
 void EepromOp::writeAllComands() {
   unsigned int tmp = _commands->size();
   unsigned int pos = 3;
+  unsigned int lastCommand = pos;
   _eeprom.writeBuffer(1,(byte *)&tmp,2);
   delay(100);
   for (int i = 0; i < tmp; i++) {
     char *str = _commands->getForwardValue();
     unsigned int sz = strlen(str);
     sz++;//terminator
+    lastCommand = pos;
     _eeprom.writeBuffer(pos,(byte *)&sz,2);
     pos += 2;
     delay(100);
     _eeprom.writeBuffer(pos,str,sz);
     pos += sz;
+    delay(100);
+    _eeprom.writeBuffer(pos,(byte *)&lastCommand,2);
+    pos += 2;
     delay(100);
   }
   _lastWritedCommand = pos;
@@ -98,6 +104,7 @@ void EepromOp::writeAllComands() {
 
 void EepromOp::appendCommand(char *command) {
   unsigned int sz = strlen(command);
+  unsigned int lastPosition = _lastWritedCommand;
   sz++;//terminator
   _eeprom.writeBuffer(_lastWritedCommand,(byte *)&sz,2);
   _lastWritedCommand += 2;
@@ -108,6 +115,9 @@ void EepromOp::appendCommand(char *command) {
   _size++;
   _eeprom.writeBuffer(1,(byte *)&_size,2);
   delay(100);
+  _eeprom.writeBuffer(_lastWritedCommand,(byte *)&lastPosition,2);
+  delay(100);
+  _lastWritedCommand += 2;
 }
 
 unsigned int EepromOp::size() {
@@ -123,6 +133,22 @@ char* EepromOp::readNextCommand() {
   char *ret = new char[sz];
   _eeprom.readBuffer(_position,(byte *)ret,sz);
   _position += sz;
-  _lastWritedCommand = _position;
+  _position += 2; //skip start position of this command which is used by previousCommand  
+  return ret;
+}
+
+char* EepromOp::readPreviousCommand() {
+  if (_position == COMMANDS_START_POSITION) {
+    return NULL;
+  }
+  unsigned int sz = 0;
+  unsigned int pos = 0;
+  _position -= 2;
+  _eeprom.readBuffer(_position,(byte *)&pos,2);
+  _position = pos;
+  _eeprom.readBuffer(pos,(byte *)&sz,2);
+  pos += 2;
+  char *ret = new char[sz];
+  _eeprom.readBuffer(pos,(byte *)ret,sz);
   return ret;
 }

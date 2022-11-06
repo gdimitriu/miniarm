@@ -49,6 +49,10 @@ StringList commands;
 EepromOp eeprom(0x50,&commands);
 boolean isAutoMode = false;
 boolean isDirectMode = false;
+boolean isStopped = true;
+unsigned int nrCommands = 0;
+boolean isForward = true;
+unsigned int position = 0;
 
 NeoSWSerial BTSerial(RxD, TxD);
 const int prefixCommandNr = 5;
@@ -85,6 +89,7 @@ void printMenu() {
   Serial.println( "Rr# run in reverse order");
   Serial.println( "C# clear the saved commands");
   Serial.println( "E[l,L,D,a,c]# save EEPROM");
+  Serial.println( "h# stop/start the loop");
   Serial.println( "-----------------------------" );
 }
 #endif
@@ -111,6 +116,7 @@ void setup() {
   isAutoMode = eeprom.shouldRunLoop();
   if (eeprom.shouldLoad() || isAutoMode) {
     unsigned int sz = eeprom.size();
+    nrCommands = sz;
     for (int i = 0; i < sz; i++) {
       char *val = eeprom.readNextCommand();
       commands.addTail(val);
@@ -125,12 +131,16 @@ void setup() {
     commands.reset();
 #endif    
   }
+  if (isAutoMode)
+    isStopped = false;
   isDirectMode = eeprom.shouldRunDirectMode();
   if (isDirectMode)
     isAutoMode = true;
   if (eeprom.shouldRunLoopDirectMode()) {
+    nrCommands = eeprom.size();
     isDirectMode = true;
     isAutoMode = true;
+    isStopped = false;
   }
   BTSerial.println("Starting");BTSerial.flush();
 }
@@ -256,7 +266,21 @@ bool makeMove(char *inData, bool isBT) {
     retValue = moveGripper(inData);
   } else if (inData[0] == 'd') {
     retValue = applyDelay(inData);
+  } else if (inData[0] == 'h') {
+    isStopped = !isStopped;
+    if (!isStopped) {
+      if (isAutoMode) {
+        if (isDirectMode)
+          nrCommands = eeprom.size();
+        else
+          nrCommands = commands.size();
+        position = 0;
+        isForward = true;
+      }
+    }
+    retValue = true;
   } else if (inData[0] == 'S') {
+    isStopped = true;
     //remove S from command
     for (int i = 0 ; i < strlen(inData); i++) {
        inData[i]=inData[i+1];
@@ -284,6 +308,8 @@ bool makeMove(char *inData, bool isBT) {
   } else if (inData[0] == 'C') {
     commands.clear();
     eeprom.clear();
+    nrCommands = 0;
+    isStopped = true;
     retValue = true;
   } else if (inData[0] == 'R') {
     //remove R from command
@@ -380,7 +406,9 @@ bool makeMove(char *inData, bool isBT) {
   return retValue;
 }
 
-void readData() {   
+void readData() {
+   if (!BTSerial.available())
+     return;
    while(BTSerial.available() > 0) // Don't read unless there you know there is data
    {
      if(indexBT < 19) // One less than the size of the array
@@ -414,8 +442,39 @@ void readData() {
 
 void loop() {
    
-while(!BTSerial.available())
-        ; // LOOP...
-   readData();
-
+  while(!BTSerial.available()) {
+      if (!isStopped && isAutoMode)
+        break;
+  }
+  readData();
+  if (!isStopped && isAutoMode) {
+    if (isForward) {
+      if (position == nrCommands) {
+        isForward = false;
+        char * command = eeprom.readPreviousCommand();
+        makeMove(command, false);
+        delete [] command;
+        position--;
+      } else {
+        char * command = eeprom.readNextCommand();
+        makeMove(command, false);
+        delete [] command;
+        position++;
+      }
+    } else {
+      if (position == 0) {
+        isForward = true;
+        char * command = eeprom.readNextCommand();
+        makeMove(command, false);
+        delete [] command;
+        position++;
+      } else {
+        char * command = eeprom.readPreviousCommand();
+        makeMove(command, false);
+        delete [] command;
+        position--;
+      }
+    }
+    delay(100);
+  }
 }

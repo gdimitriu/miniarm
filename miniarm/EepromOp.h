@@ -18,6 +18,7 @@ public:
   void writeAllComands();
   unsigned int size();
   char* readNextCommand();
+  char* readPreviousCommand();
   void appendCommand(char *command);
   void reset();
   void clear();

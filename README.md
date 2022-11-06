@@ -6,6 +6,9 @@ The platform is from [romanian site](https://www.optimusdigital.ro/en/robot-kits
 
 But is similar with [amazon site](https://www.amazon.com/Raspberry-SNAM1500-Robotic-Mechanical-Arduino/dp/B07T7ML7DF)
 
+AT24C256 I2C external EEPROM.
+
+HC-06 BLE.
 
 ### This supports the following commands:
 
@@ -19,10 +22,15 @@ Those commands could be also used with any bluetooth terminal like Arduino Bluet
 - dxx# delay in miliseconds
 
 #### advanced commands :
-- S<basic_command> save the command for later use
+- S<basic_command> save the command for later use if is direct mode it will write to external EEPROM otherwise into local memory
 - Rf# run the commands in the forward order (in the send order)
 - Rr# run the commands in the reverse order
 - C# clear all saved commands
+- Ed# set direct mode (to write to external EEPROM)
+- ED# set direct loop mode (to execute commands from EEPROM forward and then reverse)
+- Ea# write all commands from internal memory to external EEPROM
+- El# set load from EEPROM at startup into internal memory
+- EL# set load mode and loop mode
 
 ### Logical connections
 

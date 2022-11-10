@@ -4,6 +4,7 @@
     <string name="miniarm_save_file">Save file</string>
     <string name="miniarm_load_file">Load file</string>
     <string name="miniarm_append_file">Append from file</string>
+    <string name="miniarm_eeprom_op">Eeprom operations</string>
     <string name="miniarm_ble_name">Name</string>
     <string name="miniarm_ble_mac">MAC</string>
     <string name="miniarm_menu">Menu</string>
@@ -22,4 +23,10 @@
     <string name="default_waist">90</string>
     <string name="waist_name_text">Waist</string>
     <string name="delay_name_text">Delay</string>
+    <string name="auto_load_text">Auto load</string>
+    <string name="direct_mode_text">Direct EEPROM mode</string>
+    <string name="auto_loop_text">Auto loop from memory</string>
+    <string name="auto_loop_direct_text">Auto loop from EEPROM</string>
+    <string name="auto_default_text">Default mode (none)</string>
+    <string name="write_memory_to_eeprom_text">Write the comands to EEPROM</string>
 </resources>

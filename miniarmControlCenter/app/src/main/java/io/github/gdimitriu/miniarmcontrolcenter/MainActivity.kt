@@ -64,7 +64,8 @@ class MainActivity : AppCompatActivity() {
                     val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
                     var text: String? = bufferedReader.readLine()
                     while (text != null) {
-                        miniarmSettingsViewModel.commands.addLast(text + "\n")
+                        if (text != "")
+                            miniarmSettingsViewModel.commands.addLast(text + "\n")
                         text = bufferedReader.readLine()
                     }
                     fileInputStream?.close()
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openFile(pickerInitialUri: Uri, requestCode: Int) {
         var typeOp = android.content.Intent.ACTION_CREATE_DOCUMENT
-        if (requestCode == 1) {
+        if (requestCode != 2) {
             typeOp = android.content.Intent.ACTION_OPEN_DOCUMENT
         }
         var intent = Intent(typeOp).apply {
@@ -152,6 +153,13 @@ class MainActivity : AppCompatActivity() {
             R.id.miniarm_append -> {
                 val myExternalFile = File(Environment.getExternalStoragePublicDirectory("Downloads/Miniarm"),"deploy.dat")
                 openFile(myExternalFile!!.toUri(),_appendFile)
+                true
+            }
+            R.id.miniarm_eeprom -> {
+                val fragment =
+                    MiniarmEepromFragment.newInstance()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null).commit()
                 true
             }
             else -> return super.onOptionsItemSelected(item)

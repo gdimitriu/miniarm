@@ -26,6 +26,11 @@
                 android:icon="@drawable/ic_launcher_foreground"
                 android:title="@string/miniarm_append_file"
                 app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/miniarm_eeprom"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="@string/miniarm_eeprom_op"
+                app:showAsAction="ifRoom|withText" />
         </menu>
     </item>
 </menu>

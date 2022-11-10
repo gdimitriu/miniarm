@@ -31,6 +31,7 @@ Those commands could be also used with any bluetooth terminal like Arduino Bluet
 - Ea# write all commands from internal memory to external EEPROM
 - El# set load from EEPROM at startup into internal memory
 - EL# set load mode and loop mode
+- h# stop/start the auto loop mode
 
 ### Logical connections
 

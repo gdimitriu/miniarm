@@ -29,6 +29,22 @@ class MiniarmSettingsViewModel : ViewModel()  {
 
     var commands : ArrayDeque<String>
 
+    var isAutoLoadMode : Boolean
+
+    var isDirectMode : Boolean
+
+    var isAutoLoopMode: Boolean
+
+    var isAutoLoopDirectMode : Boolean
+
+    var isDefaultMode : Boolean
+
+    var isAutoModeChanged : Boolean
+
+    var isWriteToEepromAll : Boolean
+
+    var isWriteToEepromAllChanged : Boolean
+
     init {
         Log.d(TAG, "Initialized the model view")
         isChanged = true
@@ -45,6 +61,14 @@ class MiniarmSettingsViewModel : ViewModel()  {
         delay = "0"
         isDelayChanged = true
         commands = ArrayDeque<String>()
+        isAutoLoadMode = false
+        isDirectMode = false
+        isAutoLoopMode = false
+        isAutoLoopDirectMode = false
+        isDefaultMode = true
+        isAutoModeChanged = true
+        isWriteToEepromAll = false
+        isWriteToEepromAllChanged = false
     }
 
     override fun onCleared() {

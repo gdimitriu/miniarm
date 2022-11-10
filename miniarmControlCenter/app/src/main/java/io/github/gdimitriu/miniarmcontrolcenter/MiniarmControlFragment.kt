@@ -300,6 +300,32 @@ class MiniarmControlFragment : Fragment() {
         execButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (miniarmSettingsViewModel.isWriteToEepromAllChanged) {
+                    if (!miniarmSettingsViewModel.isWriteToEepromAll) {
+                        miniarmSettingsViewModel.isWriteToEepromAllChanged = false
+                    } else if (sendOneWayCommandToMiniarm("Ea#\n")) {
+                        Log.d(TAG, "Send write all commands to EEPROM")
+                        miniarmSettingsViewModel.isWriteToEepromAllChanged = false
+                    }
+                }
+                if (miniarmSettingsViewModel.isAutoModeChanged) {
+                    var autoModeValue = ""
+                    if (miniarmSettingsViewModel.isAutoLoadMode) {
+                        autoModeValue = "l"
+                    } else if (miniarmSettingsViewModel.isAutoLoopMode) {
+                        autoModeValue = "L"
+                    } else if(miniarmSettingsViewModel.isDirectMode) {
+                        autoModeValue = "d"
+                    } else if(miniarmSettingsViewModel.isAutoLoopDirectMode) {
+                        autoModeValue = "D"
+                    } else if (miniarmSettingsViewModel.isDefaultMode) {
+                        autoModeValue = "c"
+                    }
+                    if (sendOneWayCommandToMiniarm(String.format("E%s#\n",autoModeValue))) {
+                        Log.d(TAG, "Send auto mode")
+                        miniarmSettingsViewModel.isAutoModeChanged = false
+                    }
+                }
                 if (isCurrentWaistChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("w%s#\n",miniarmSettingsViewModel.currentWaist))) {
                         Log.d(TAG, "Waist exec")
@@ -348,6 +374,24 @@ class MiniarmControlFragment : Fragment() {
         saveButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (miniarmSettingsViewModel.isAutoModeChanged) {
+                    var autoModeValue = ""
+                    if (miniarmSettingsViewModel.isAutoLoadMode) {
+                        autoModeValue = "l"
+                    } else if (miniarmSettingsViewModel.isAutoLoopMode) {
+                        autoModeValue = "L"
+                    } else if(miniarmSettingsViewModel.isDirectMode) {
+                        autoModeValue = "d"
+                    } else if(miniarmSettingsViewModel.isAutoLoopDirectMode) {
+                        autoModeValue = "D"
+                    } else if (miniarmSettingsViewModel.isDefaultMode) {
+                        autoModeValue = "c"
+                    }
+                    if (sendOneWayCommandToMiniarm(String.format("E%s#\n",autoModeValue))) {
+                        Log.d(TAG, "Send auto mode")
+                        miniarmSettingsViewModel.isAutoModeChanged = false
+                    }
+                }
                 if (isCurrentWaistChanged) {
                     if (sendOneWayCommandToMiniarm(String.format("Sw%s#\n",miniarmSettingsViewModel.currentWaist))) {
                         Log.d(TAG, "Waist saved")
@@ -413,6 +457,24 @@ class MiniarmControlFragment : Fragment() {
         deployButton.setOnTouchListener { _, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (miniarmSettingsViewModel.isAutoModeChanged) {
+                    var autoModeValue = ""
+                    if (miniarmSettingsViewModel.isAutoLoadMode) {
+                        autoModeValue = "l"
+                    } else if (miniarmSettingsViewModel.isAutoLoopMode) {
+                        autoModeValue = "L"
+                    } else if(miniarmSettingsViewModel.isDirectMode) {
+                        autoModeValue = "d"
+                    } else if(miniarmSettingsViewModel.isAutoLoopDirectMode) {
+                        autoModeValue = "D"
+                    } else if (miniarmSettingsViewModel.isDefaultMode) {
+                        autoModeValue = "c"
+                    }
+                    if (sendOneWayCommandToMiniarm(String.format("E%s#\n",autoModeValue))) {
+                        Log.d(TAG, "Send auto mode")
+                        miniarmSettingsViewModel.isAutoModeChanged = false
+                    }
+                }
                 if (sendOneWayCommandToMiniarm(String.format("C#\n"))) {
                     Log.d(TAG, "Clear command list")
                 }

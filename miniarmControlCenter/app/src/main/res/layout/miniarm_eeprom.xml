@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/auto_mode"
+        android:layout_width="275dp"
+        android:layout_height="235dp"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/write_all_commands"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <RadioButton
+            android:id="@+id/auto_load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_load_text" />
+
+        <RadioButton
+            android:id="@+id/direct_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/direct_mode_text" />
+
+        <RadioButton
+            android:id="@+id/auto_loop"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/auto_loop_text" />
+
+        <RadioButton
+            android:id="@+id/auto_loop_direct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_loop_direct_text" />
+
+        <RadioButton
+            android:id="@+id/auto_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_default_text" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:id="@+id/write_all_commands"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/auto_mode">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/write_memory_to_eeprom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/write_memory_to_eeprom_text" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

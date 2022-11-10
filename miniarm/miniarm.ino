@@ -142,7 +142,6 @@ void setup() {
     isAutoMode = true;
     isStopped = false;
   }
-  BTSerial.println("Starting");BTSerial.flush();
 }
 
 void makeCleanupBT() {
@@ -254,6 +253,42 @@ bool applyDelay(char *inData) {
   return true;
 }
 
+void moveForward() {
+  if (!isDirectMode) {
+    commands.reset();
+    char *temp = commands.getForwardValue();
+    while (temp != NULL) {
+       makeMove(temp,false);
+      temp = commands.getForwardValue();
+    }
+  } else {
+    int size = eeprom.size();
+    eeprom.reset();
+    for (int i = 0; i <size; i++) {
+      char * command = eeprom.readNextCommand();
+      makeMove(command, false);
+      delete [] command;
+    }
+  }
+}
+
+void moveReverse() {
+  if(!isDirectMode) {
+    commands.reset();
+    char *temp = commands.getReverseValue();      
+    while (temp != NULL) {
+      makeMove(temp,false);
+      temp = commands.getReverseValue();
+    }
+  } else {
+    int size = eeprom.size();
+    for (int i = 0; i <size; i++) {
+      char * command = eeprom.readPreviousCommand();
+      makeMove(command, false);
+      delete [] command;
+    }
+  }
+}
 bool makeMove(char *inData, bool isBT) {
   bool retValue = false;
   if (inData[0] == 'w') {
@@ -322,12 +357,7 @@ bool makeMove(char *inData, bool isBT) {
         Serial.println("Move commands in forward order");
       }
 #endif      
-      commands.reset();
-      char *temp = commands.getForwardValue();
-      while (temp != NULL) {
-        makeMove(temp,false);
-        temp = commands.getForwardValue();
-      }
+      moveForward();
       retValue = true;
     } else if (inData[0] == 'r') {
 #ifdef SERIAL_DEBUG
@@ -335,12 +365,7 @@ bool makeMove(char *inData, bool isBT) {
         Serial.println("Move commands in reverse order");
       }
 #endif
-      commands.reset();
-      char *temp = commands.getReverseValue();      
-      while (temp != NULL) {
-        makeMove(temp,false);
-        temp = commands.getReverseValue();
-      }
+      moveReverse();
       retValue = true;
     }
   } else if (inData[0] == 'E') {

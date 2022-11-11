@@ -46,6 +46,8 @@ class MiniarmControlFragment : Fragment() {
     private var isDelayChanged : Boolean = false
     //exec
     private lateinit var execButton : Button
+    //stop/start
+    private lateinit var stopButton : Button
     //disconnect
     private lateinit var disconnectButton : Button
     //run forward
@@ -356,6 +358,17 @@ class MiniarmControlFragment : Fragment() {
                         isDelayChanged = false
                         miniarmSettingsViewModel.isDelayChanged = false
                     }
+                }
+            }
+            return@setOnTouchListener false
+        }
+        //stop button
+        stopButton = view.findViewById(R.id.miniarm_stop)
+        stopButton.setOnTouchListener { _, motionEvent ->
+            val event = motionEvent as MotionEvent
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                if (sendOneWayCommandToMiniarm("h#\n")) {
+                    Log.d(TAG,"Stop/Start")
                 }
             }
             return@setOnTouchListener false

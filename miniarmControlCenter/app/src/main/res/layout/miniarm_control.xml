@@ -224,10 +224,22 @@
             android:layout_marginBottom="16dp"
             android:text="@string/miniarm_exec"
             app:layout_constraintBottom_toTopOf="@+id/miniarm_deploy"
-            app:layout_constraintEnd_toStartOf="@id/miniarm_run_reverse"
+            app:layout_constraintEnd_toStartOf="@id/miniarm_stop"
             app:layout_constraintStart_toEndOf="@id/miniarm_run_forward"
             app:layout_constraintTop_toTopOf="parent" />
-
+        <Button
+            android:id="@+id/miniarm_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/miniarm_stop"
+            app:layout_constraintBottom_toTopOf="@+id/miniarm_deploy"
+            app:layout_constraintEnd_toStartOf="@id/miniarm_run_reverse"
+            app:layout_constraintStart_toEndOf="@id/miniarm_exec"
+            app:layout_constraintTop_toTopOf="parent" />
         <Button
             android:id="@+id/miniarm_run_reverse"
             android:layout_width="wrap_content"
@@ -237,7 +249,7 @@
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="16dp"
             android:text="@string/miniarm_run_reverse"
-            app:layout_constraintStart_toEndOf="@id/miniarm_exec"
+            app:layout_constraintStart_toEndOf="@id/miniarm_stop"
             app:layout_constraintBottom_toTopOf="@+id/miniarm_disconnect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -32,8 +32,8 @@
 #define servoPin_Elbow 5
 #define servoPin_Shoulder 6
 #define servoPin_Waist 7
-#define SERIAL_DEBUG 1
-#define SERIAL_DEBUG_MENU 1
+//#define SERIAL_DEBUG 1
+//#define SERIAL_DEBUG_MENU 1
 
 Servo servo_Gripper;
 Servo servo_Elbow;

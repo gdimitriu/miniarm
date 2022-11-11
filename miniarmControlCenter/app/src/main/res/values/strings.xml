@@ -9,8 +9,9 @@
     <string name="miniarm_ble_mac">MAC</string>
     <string name="miniarm_menu">Menu</string>
     <string name="miniarm_exec">Exec</string>
-    <string name="miniarm_run_forward">Run Forward</string>
-    <string name="miniarm_run_reverse">Run Reverse</string>
+    <string name="miniarm_stop">STOP</string>
+    <string name="miniarm_run_forward">Run F</string>
+    <string name="miniarm_run_reverse">Run R</string>
     <string name="miniarm_deploy">Deploy</string>
     <string name="miniarm_save">Save</string>
     <string name="miniarm_disconnect">Disconnect</string>

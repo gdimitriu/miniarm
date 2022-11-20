@@ -1,5 +1,7 @@
 # miniarm
 
+![miniarm](./docs/miniarm.jpg)
+
 ## miniarm (arduino application)
 
 The platform is from [romanian site](https://www.optimusdigital.ro/en/robot-kits/8148-mini-robotic-arm-kit.html)
@@ -40,7 +42,7 @@ Those commands could be also used with any bluetooth terminal like Arduino Bluet
 ## miniarm control center (android application)
 android control center for robotic mini arm
 
-![main control](docs/miniarm-main.jpg)
+![main control](docs/miniarm-main.jpg =8)
 
 
 ![eeprom](docs/miniarm-eeprom.jpg)

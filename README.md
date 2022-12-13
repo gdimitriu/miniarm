@@ -42,7 +42,7 @@ Those commands could be also used with any bluetooth terminal like Arduino Bluet
 ## miniarm control center (android application)
 android control center for robotic mini arm
 
-![main control](docs/miniarm-main.jpg =8)
+![main control](docs/miniarm-main.jpg)
 
 
 ![eeprom](docs/miniarm-eeprom.jpg)

@@ -102,15 +102,17 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                var value = sequence.toString().toInt()
-                if (value < _minServo) {
-                    value = _minServo
+                if (sequence.toString().isNotEmpty() && sequence.toString().isNotBlank()) {
+                    var value = sequence.toString().toInt()
+                    if (value < _minServo) {
+                        value = _minServo
+                    }
+                    if (value > _maxServo) {
+                        value = _maxServo
+                    }
+                    miniarmSettingsViewModel.currentGripper = value.toString()
+                    isCurrentGripperChanged = true
                 }
-                if (value > _maxServo) {
-                    value = _maxServo
-                }
-                miniarmSettingsViewModel.currentGripper = value.toString()
-                isCurrentGripperChanged = true
             }
 
             override fun afterTextChanged(sequence: Editable?) {
@@ -153,15 +155,17 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                var value = sequence.toString().toInt()
-                if (value < _minServo) {
-                    value = _minServo
+                if (sequence.toString().isNotEmpty() && sequence.toString().isNotBlank()) {
+                    var value = sequence.toString().toInt()
+                    if (value < _minServo) {
+                        value = _minServo
+                    }
+                    if (value > _maxServo) {
+                        value = _maxServo
+                    }
+                    miniarmSettingsViewModel.currentElbow = value.toString()
+                    isCurrentElbowChanged = true
                 }
-                if (value > _maxServo) {
-                    value = _maxServo
-                }
-                miniarmSettingsViewModel.currentElbow = value.toString()
-                isCurrentElbowChanged = true
             }
 
             override fun afterTextChanged(sequence: Editable?) {
@@ -204,15 +208,17 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                var value = sequence.toString().toInt()
-                if (value < _minServo) {
-                    value = _minServo
+                if (sequence.toString().isNotEmpty() && sequence.toString().isNotBlank()) {
+                    var value = sequence.toString().toInt()
+                    if (value < _minServo) {
+                        value = _minServo
+                    }
+                    if (value > _maxServo) {
+                        value = _maxServo
+                    }
+                    miniarmSettingsViewModel.currentShoulder = value.toString()
+                    isCurrentShoulderChanged = true
                 }
-                if (value > _maxServo) {
-                    value = _maxServo
-                }
-                miniarmSettingsViewModel.currentShoulder = value.toString()
-                isCurrentShoulderChanged = true
             }
 
             override fun afterTextChanged(sequence: Editable?) {
@@ -255,15 +261,17 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                var value = sequence.toString().toInt()
-                if (value < _minServo) {
-                    value = _minServo
+                if (sequence.toString().isNotEmpty() && sequence.toString().isNotBlank()) {
+                    var value = sequence.toString().toInt()
+                    if (value < _minServo) {
+                        value = _minServo
+                    }
+                    if (value > _maxServo) {
+                        value = _maxServo
+                    }
+                    miniarmSettingsViewModel.currentWaist = value.toString()
+                    isCurrentWaistChanged = true
                 }
-                if (value > _maxServo) {
-                    value = _maxServo
-                }
-                miniarmSettingsViewModel.currentWaist = value.toString()
-                isCurrentWaistChanged = true
             }
 
             override fun afterTextChanged(sequence: Editable?) {
@@ -282,13 +290,15 @@ class MiniarmControlFragment : Fragment() {
             }
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                var value = sequence.toString().toInt()
-                if (value < 0) {
-                    value = 0
+                if (sequence.toString().isNotEmpty() && sequence.toString().isNotBlank()) {
+                    var value = sequence.toString().toInt()
+                    if (value < 0) {
+                        value = 0
+                    }
+                    miniarmSettingsViewModel.delay = value.toString()
+                    isDelayChanged = true
+                    miniarmSettingsViewModel.isDelayChanged = true
                 }
-                miniarmSettingsViewModel.delay = value.toString()
-                isDelayChanged = true
-                miniarmSettingsViewModel.isDelayChanged = true
             }
 
             override fun afterTextChanged(sequence: Editable?) {

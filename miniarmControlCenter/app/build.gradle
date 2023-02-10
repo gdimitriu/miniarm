@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "io.github.gdimitriu.miniarmcontrolcenter"
         minSdk 29
-        targetSdk 29
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
